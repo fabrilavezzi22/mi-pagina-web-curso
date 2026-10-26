@@ -6,24 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario</title>
 
-  <script src="validación.js"></script>
-
   <!-- Vinculamos tu archivo CSS externo -->
   <link rel="stylesheet" href="style.css">
 
   <!-- Google reCAPTCHA v2 Script -->
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
+  <!-- SDK de EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-    <script type="text/javascript">
-        // 2. Inicializar EmailJS con tu Clave Pública (Public Key)
-        (function() {
-            emailjs.init({
-                publicKey: "lZVsfMUF-29Wv_YXa", // Reemplaza con tu Public Key real
-            });
-        })();
-    </script>
+  <script type="text/javascript">
+      // Inicializar EmailJS con tu Clave Pública
+      (function() {
+          emailjs.init({
+              publicKey: "lZVsfMUF-29Wv_YXa",
+          });
+      })();
+  </script>
+
+  <!-- Tu archivo de validación (y envío) -->
+  <script src="validación.js" defer></script>
 </head>
 
 <body>
@@ -31,13 +33,14 @@
   <div class="caja-formulario">
     <h2>Registro de Usuario</h2>
 
-    <form onsubmit="return validar(event)" novalidate>   <!-- Modifiqué el form para vincularlo
-      con la función que hice en el js. El novalidate es para neutralizar los 
-      required que puso Fabri. Sino, no tiene sentido que detecte campos vacíos con el js -->
+    <!-- Agregué un id="contact-form" para que te sea fácil seleccionarlo desde tu JS -->
+    <form id="contact-form" onsubmit="return validar(event)" novalidate>
+      
       <div class="campo">
         <label for="nombre">Nombre completo</label>
-        <input type="text" id="nombre" placeholder="Ej. Nombre Apellido" required>
-        <p id="nombre_válido" class="oculto"></p> <!--Agrego esta línea para que me muestre el error -->
+        <!-- ¡Importante! Añadido name="nombre" para que EmailJS lo detecte -->
+        <input type="text" id="nombre" name="nombre" placeholder="Ej. Nombre Apellido" required>
+        <p id="nombre_válido" class="oculto"></p>
       </div>
 
       <div class="campo">
@@ -46,11 +49,11 @@
         <p id="email_válido" class="oculto"></p>
       </div>
 
-     <!-- <div class="campo"> 
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" required>
-        <p id="password_válido" class="oculto"></p>
-      </div> -->
+      <div class="campo">
+        <label for="asunto">Asunto</label>
+        <input type="text" name="asunto" id="asunto" placeholder="Ej. Consulta sobre el servicio" required>
+        <p id="asunto_válido" class="oculto"></p>
+      </div>
 
       <!-- Widget de reCAPTCHA v2 -->
       <div class="campo-recaptcha">
@@ -58,31 +61,6 @@
       </div>
 
       <button type="submit">Enviar Registro</button>
-
-       <script type="text/javascript">
-        window.onload = function() {
-            const form = document.getElementById('contact-form');
-            const btn = document.getElementById('btn-submit');
-
-            form.addEventListener('submit', function(event) {
-                event.preventDefault(); // Evita que la página se recargue
-
-                btn.innerText = 'Enviando...';
-
-                // Reemplaza los dos primeros parámetros con tus IDs reales del Dashboard
-                emailjs.sendForm('service_l13m6uw', 'template_qacvw4o', this)
-                    .then(function() {
-                        alert('¡Correo enviado con éxito!');
-                        btn.innerText = 'Enviar Correo';
-                        form.reset(); // Limpia los campos del formulario
-                    }, function(error) {
-                        alert('Error al enviar el correo: ' + JSON.stringify(error));
-                        btn.innerText = 'Enviar Correo';
-                    });
-            });
-        }
-    </script>
-
 
     </form>
   </div>
