@@ -14,6 +14,8 @@
   <!-- Google reCAPTCHA v2 Script -->
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
     <script type="text/javascript">
         // 2. Inicializar EmailJS con tu Clave Pública (Public Key)
         (function() {
@@ -40,15 +42,15 @@
 
       <div class="campo">
         <label for="email">Correo electrónico</label>
-        <input type="email" id="email" placeholder="nombre@ejemplo.com" required>
+        <input type="email" name="email" id="email" placeholder="nombre@ejemplo.com" required>
         <p id="email_válido" class="oculto"></p>
       </div>
 
-      <div class="campo">
+     <!-- <div class="campo"> 
         <label for="password">Contraseña</label>
         <input type="password" id="password" required>
         <p id="password_válido" class="oculto"></p>
-      </div>
+      </div> -->
 
       <!-- Widget de reCAPTCHA v2 -->
       <div class="campo-recaptcha">
