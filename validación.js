@@ -17,7 +17,7 @@ Luego tengo que ir validando los campos
 */
 
 emailjs.init({
-    publicKey: "C4RSVbn4z9uO6lW9E"
+    publicKey: "lZVsfMUF-29Wv_YXa"
 });
 
 async function validar (event) {
@@ -142,8 +142,8 @@ try {
     console.log("Intentando enviar el formulario...");
 
     await emailjs.sendForm(
-        "service_3561mls",
-        "template_8p7wkki",
+        "service_l13m6uw",
+        "template_qacvw4o",
         event.target
     );
 
