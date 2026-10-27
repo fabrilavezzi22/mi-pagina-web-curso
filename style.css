@@ -83,3 +83,24 @@ button[type="submit"]:hover {
 button[type="submit"]:hover {
     background-color: #0b5ed7;
 }
+
+/* Estilo unificado y altura ampliada para la caja de mensaje */
+.campo textarea {
+    width: 100%;
+    height: 120px; /* Acá podés ajustar la altura (más alto o más bajo) */
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+    font-family: inherit; /* Mantiene la misma fuente que los inputs */
+    resize: vertical; /* Permite al usuario estirarla solo hacia abajo si lo desea */
+}
+
+/* Efecto de foco idéntico al de los inputs */
+.campo textarea:focus {
+    border-color: #0d6efd;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
