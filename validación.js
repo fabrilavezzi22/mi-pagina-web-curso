@@ -158,10 +158,3 @@ try {
     console.log("Error al enviar:", error);
     alert("No se pudo enviar el mensaje. Intentá nuevamente.");
 }
-
-return false;
-
-}
-
-    return false;
-}
