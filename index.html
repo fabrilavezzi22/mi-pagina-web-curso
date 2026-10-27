@@ -6,26 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario</title>
 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="validación.js" defer></script>
+
   <!-- Vinculamos tu archivo CSS externo -->
   <link rel="stylesheet" href="style.css">
 
   <!-- Google reCAPTCHA v2 Script -->
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
-  <!-- SDK de EmailJS -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-  <script type="text/javascript">
-      // Inicializar EmailJS con tu Clave Pública
-      (function() {
-          emailjs.init({
-              publicKey: "lZVsfMUF-29Wv_YXa",
-          });
-      })();
-  </script>
-
-  <!-- Tu archivo de validación (y envío) -->
-  <script src="validación.js" defer></script>
 </head>
 
 <body>
@@ -33,27 +21,39 @@
   <div class="caja-formulario">
     <h2>Registro de Usuario</h2>
 
-    <!-- Agregué un id="contact-form" para que te sea fácil seleccionarlo desde tu JS -->
-    <form id="contact-form" onsubmit="return validar(event)" novalidate>
-      
+    <form onsubmit="return validar(event)" novalidate>   <!-- Modifiqué el form para vincularlo
+      con la función que hice en el js. El novalidate es para neutralizar los 
+      required que puso Fabri. Sino, no tiene sentido que detecte campos vacíos con el js -->
       <div class="campo">
         <label for="nombre">Nombre completo</label>
-        <!-- ¡Importante! Añadido name="nombre" para que EmailJS lo detecte -->
         <input type="text" id="nombre" name="nombre" placeholder="Ej. Nombre Apellido" required>
-        <p id="nombre_válido" class="oculto"></p>
+        <p id="nombre_válido" class="oculto"></p> <!--Agrego esta línea para que me muestre el error -->
       </div>
 
       <div class="campo">
         <label for="email">Correo electrónico</label>
-        <input type="email" name="email" id="email" placeholder="nombre@ejemplo.com" required>
+        <input type="email" id="email" name="email" placeholder="nombre@ejemplo.com" required>
         <p id="email_válido" class="oculto"></p>
       </div>
 
       <div class="campo">
         <label for="asunto">Asunto</label>
-        <input type="text" name="asunto" id="asunto" placeholder="Ej. Consulta sobre el servicio" required>
+        <input type="text" id="asunto" name="asunto" placeholder="Ej. Consulta sobre el servicio" required>
         <p id="asunto_válido" class="oculto"></p>
       </div>
+
+    <div class="campo">
+    <label for="mensaje">Mensaje</label>
+    <textarea id="mensaje" name="mensaje" required></textarea>
+    <p id="mensaje_válido" class="oculto"></p>
+    </div>
+<!-- 
+    
+      <div class="campo">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" required>
+        <p id="password_válido" class="oculto"></p>
+      </div>   -->
 
       <!-- Widget de reCAPTCHA v2 -->
       <div class="campo-recaptcha">
@@ -61,10 +61,10 @@
       </div>
 
       <button type="submit">Enviar Registro</button>
-
     </form>
   </div>
 
 </body>
 
+</html>
 </html>
