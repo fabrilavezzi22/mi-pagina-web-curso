@@ -16,58 +16,54 @@ Luego tengo que ir validando los campos
 
 */
 
+/*
+Proceso general de validación y envío por EmailJS
+*/
+
 emailjs.init({
     publicKey: "lZVsfMUF-29Wv_YXa"
 });
 
-async function validar (event) {
+async function validar(event) {
+    event.preventDefault();
 
-event.preventDefault();
+    let funciona_bien = true;
 
-let funciona_bien = true;
-
-//Validación del nombre
-
-let nombre_ingresado;
-let respuesta_nombre;
-nombre_ingresado = document.getElementById ("nombre").value.trim(); //.trim sirve para eliminar caracteres vacíos
-if (nombre_ingresado.length == 0) {
-    respuesta_nombre = "Debe ingresar su nombre y su apellido";
-    funciona_bien = false;
-} else if (nombre_ingresado.length < 3) {
-    respuesta_nombre = "El nombre es demasiado corto como para ser válido";
-    funciona_bien = false;
-} 
-else {
-    respuesta_nombre = "Nombre válido";
+    // Validación del nombre
+    let nombre_ingresado;
+    let respuesta_nombre;
+    nombre_ingresado = document.getElementById("nombre").value.trim();
+    if (nombre_ingresado.length == 0) {
+        respuesta_nombre = "Debe ingresar su nombre y su apellido";
+        funciona_bien = false;
+    } else if (nombre_ingresado.length < 3) {
+        respuesta_nombre = "El nombre es demasiado corto como para ser válido";
+        funciona_bien = false;
+    } else {
+        respuesta_nombre = "Nombre válido";
     }
-document.getElementById ("nombre_válido").textContent = respuesta_nombre ;
-console.log (respuesta_nombre);
+    document.getElementById("nombre_válido").textContent = respuesta_nombre;
 
-//Validación del mail
-let mail_ingresado;
-let respuesta_correo;
-let mail = document.getElementById("email");
-mail_ingresado = document.getElementById ("email").value.trim();
-if (mail_ingresado.length == 0) {
-    respuesta_correo = "Debe ingresar un correo válido";
-    funciona_bien = false;
-} else if (!mail.validity.valid) {
-    respuesta_correo = "El formato del correo no es válido";
-    funciona_bien = false;
-} 
-else {
-    respuesta_correo = "Correo válido";
-}
-document.getElementById ("email_válido").textContent = respuesta_correo ;
-console.log (respuesta_correo);
+    // Validación del mail
+    let mail_ingresado;
+    let respuesta_correo;
+    let mail = document.getElementById("email");
+    mail_ingresado = document.getElementById("email").value.trim();
+    if (mail_ingresado.length == 0) {
+        respuesta_correo = "Debe ingresar un correo válido";
+        funciona_bien = false;
+    } else if (!mail.validity.valid) {
+        respuesta_correo = "El formato del correo no es válido";
+        funciona_bien = false;
+    } else {
+        respuesta_correo = "Correo válido";
+    }
+    document.getElementById("email_válido").textContent = respuesta_correo;
 
-//Validación del asunto
-
+    // Validación del asunto
     let asunto_ingresado;
     let respuesta_asunto;
     asunto_ingresado = document.getElementById("asunto").value.trim();
-
     if (asunto_ingresado.length == 0) {
         respuesta_asunto = "Debe ingresar un asunto";
         funciona_bien = false;
@@ -78,14 +74,11 @@ console.log (respuesta_correo);
         respuesta_asunto = "Asunto válido";
     }
     document.getElementById("asunto_válido").textContent = respuesta_asunto;
-    console.log (respuesta_asunto);
 
-    //Validación del mensaje
-
+    // Validación del mensaje
     let mensaje_ingresado;
     let respuesta_mensaje;
     mensaje_ingresado = document.getElementById("mensaje").value.trim();
-
     if (mensaje_ingresado.length == 0) {
         respuesta_mensaje = "Debe ingresar un mensaje";
         funciona_bien = false;
@@ -96,66 +89,39 @@ console.log (respuesta_correo);
         respuesta_mensaje = "Mensaje válido";
     }
     document.getElementById("mensaje_válido").textContent = respuesta_mensaje;
-    console.log (respuesta_mensaje);
 
-/*
-//Validación de la contraseña
-let password_ingresado;
-let respuesta_password;
-password_ingresado = document.getElementById ("password").value;
-if (password_ingresado.length == 0) {
-    respuesta_password = "Debe ingresar una contraseña";
-    funciona_bien = false;
-} else if (password_ingresado.length < 10) {
-    respuesta_password = "La contraseña es demasiado corta como para ser válida";
-    funciona_bien = false;
-}  else if (!/[A-Z]/.test(password_ingresado)) {
-    respuesta_password = "Debe incluir al menos una mayúscula";
-    funciona_bien = false;
-} else if (!/[0-9]/.test(password_ingresado)) {
-    respuesta_password = "Debe incluir al menos un número";
-    funciona_bien = false;
-}  else {
-    respuesta_password = "Contraseña válida";
-}
+    // Validación del captcha
+    if (grecaptcha.getResponse() == "") {
+        funciona_bien = false;
+        console.log("Debe completar el CAPTCHA");
+    }
 
-document.getElementById ("password_válido").textContent = respuesta_password ;
-console.log (respuesta_password); */
+    // Si alguna validación falla, detenemos el envío.
+    if (funciona_bien == false) {
+        return false;
+    }
 
-/*Validación del captcha
-Don GPT me dijo que hay que usar grecaptcha debido al captcha de google que linkeó
-Fabri en el html.  */
+    // Envío del formulario mediante EmailJS.
+    try {
+        console.log("Intentando enviar el formulario...");
 
-if (grecaptcha.getResponse() == "") {
-    funciona_bien = false;
-    console.log("Debe completar el CAPTCHA");
-}
+        await emailjs.sendForm(
+            "service_l13m6uw",
+            "template_qacvw4o",
+            event.target
+        );
 
-// Si alguna validación falla, no enviamos el correo.
-if (funciona_bien == false) {
-    return false;
-}
+        console.log("EmailJS confirmó el envío.");
+        alert("¡Mensaje enviado correctamente!");
 
-// Envío del formulario mediante EmailJS.
-// Envío del formulario mediante EmailJS.
-try {
-    console.log("Intentando enviar el formulario...");
+        event.target.reset();
+        grecaptcha.reset();
 
-    await emailjs.sendForm(
-        "service_l13m6uw",
-        "template_qacvw4o",
-        event.target
-    );
+        return true; // Indicamos que salió todo bien
 
-    console.log("EmailJS confirmó el envío.");
-
-    alert("¡Mensaje enviado correctamente!");
-
-    event.target.reset();
-    grecaptcha.reset();
-
-} catch (error) {
-    console.log("Error al enviar:", error);
-    alert("No se pudo enviar el mensaje. Intentá nuevamente.");
-}
+    } catch (error) {
+        console.log("Error al enviar:", error);
+        alert("No se pudo enviar el mensaje. Intentá nuevamente.");
+        return false;
+    }
 }
